@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euf -o pipefail
+
+NET="$1"
+OUT="${2:-${NET%.net}.deg}"
+
+<"$NET" awk '{print $1}' | sort -n | uniq -c | awk '{print $1}' | sort -nr > "$OUT"
+

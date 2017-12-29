@@ -1,0 +1,18 @@
+USAGE:
+make
+kron_generator EDGECOUNT NUM_2SEEDS NUM_3SEEDS NUM_5SEEDS > OUTPUT_GRAPH.net
+	# OUTPUT_GRAPH.net is in edgelist format, per-line source target
+optional: net2undir OUTPUT_GRAPH.net [UNDIR_GRAPH.net]
+	# makes the graph undirected if you want to experiment with that
+net2deg GRAPH.net [GRAPH.deg]
+	# in GRAPH.deg, lineno is vertex ID and value is count
+deg2freqdeg GRAPH.deg [GRAPH.freqdeg]
+	# in GRAPH.freqdeg, val1 is count and val2 is degree
+	# if you want a freq v. deg plot that means plot val1 on y and val2 on x, e.g.
+gnuplot
+	set logscale x
+	set logscale y
+	plot 'GRAPH.freqdeg' u 2:1
+	# i also like:
+	set style fill solid
+	plot 'GRAPH.freqdeg' u 2:1 w boxes

@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euf -o pipefail
+
+DEG="$1"
+OUT="${2:-${DEG%.deg}.freqdeg}"
+
+<"$DEG" uniq -c > "$OUT"
+

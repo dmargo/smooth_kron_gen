@@ -1,0 +1,84 @@
+1-DIMENSIONAL CASE:
+Given the unit normal seed [a|b], we want to find the integral of its infinite tensor series from 0 to 1/3.
+
+Let f(0,x) be the integral of the infinite tensor series from 0 to x.
+Then, f(0, 1/3) = f(0, 1/4) + f(1/4, 5/16) + f(5/16, 21/64)...
+This corresponds to the binary representation of 1/3, which is 0.010101...
+
+f(0, 1/4) = a^2
+f(1/4, 5/16) = a^2 * ab = a^3 * b
+f(5/16, 21/64) = a^2 * (ab)^2 = a^4 * b^2
+I suggest you check each of these cases before continuing.
+
+The key insight is that in each case, we take the first quarter, and then advance into the second quarter and take the first quarter again, and so on recursively.
+1/4th = first quarter of the unit line, 5/16th = first quarter of the second quarter of the unit line, etc.
+Therefore, there is a geometric series given by the recurrence of the SECOND quarter.
+
+For the unit normal seed [a|b] the first quarter is a^2, and the second quarter is a*b.
+This corresponds to the geometric series a^2 + a^2 * ab + a^2 * (ab)^2..., which is exactly what we see above.
+The infinite sum of this series is simply initial/(1-ratio), or (a^2)/(1-ab)
+
+What about f(0, 2/3)? It's the same series, the initial is just the first half instead of the first quarter.
+So, the initial is (a) instead of (a^2), and the sum is a/(1-ab).
+f(1/3, 2/3) = f(0, 2/3) - f(0, 1/3) = (a - a^2)/(1 - ab)
+Similarly, f(2/3, 1) = (1 - ab - a)/(1 - ab)
+But you could also solve f(2/3, 1) by just reversing a and b; recall that a + b = 1, so b = 1-a.
+So 1 - ab - a = b - ab = b(1 - a) = b^2
+
+
+2-DIMENSIONAL CASE:
+[A|B]
+[C|D]
+Is our 2x2 seed.
+
+It's very hard to describe this case without drawings, unfortunately.
+The basic idea is that, to solve for the top-left of the 3x3 seed (index 0,0)
+we're going to take the top-left of the 4x4 (index 0,0) and then recurse into the middle-top-left (index 1,1).
+This is exactly analogous to the recursion in the one-dimensional case; we're taking an infinite series over the diagonal.
+Since the ratio of the middle-top-left is a*d, the ratio of the infinite series will also be a*d.
+I suggest you draw this out.
+
+Each term in the infinite series along the diagonal is going to consist of a top-left quadrant a*a (index 0,0)
+and then an infinite series of columns along the right and an infinite series of rows along the bottom.
+The infinite series of columns on the right is in the quadrant a*b (index row=0, column=1)
+and the infinite series of rows on the bottom is in the quadrant a*c (index row=1, column=0).
+This is the tricky part so draw it out before you continue.
+
+For the infinite series of columns on the right, we take the first column and then recurse into the second.
+The first column is (a^2 + ac + ac + c^2) = (a+c)^2, and the second column is (ab + ad + cb + cd) = (a+c)(b+d).
+So the infinite series is (a+c)^2 / (1 - (a+c)(b+d)).
+
+For the infinite series of rows on the bottom, it just ends up being the transpose of the above.
+So the first row is (a^2 + ab + ab + b^2) = (a+b)^2, and the second row is (ac+ad+bc+bd) = (a+b)(c+d)
+So the infinite series is (a+b)^2 / (1 - (a+b)(c+d)).
+
+Recall that this is all taking place in the context of an infinite series over the diagonal.
+The initial value of that series is a^2 + ab * (a+c)^2/(1-(a+c)(b+d)) + ac * (a+b)^2/(1-(a+b)(c+d))
+And the ratio is just ad, so it's that whole mess over (1-ad).
+This gives us an equation for the top-left quadrant.
+
+You can get the top-right, the bottom-left, and the bottom-right by just transposing A,B,C, and D around.
+Also, as in the 1d-case you can get the top-left-2/3rds by dividing by A.
+This lets you get 3 more equations for each of the corners by transposing values around, so we have 8 equations total.
+The 9th equation is just the unit sum equation of the whole matrix. 9 equations, 3x3=9 values.
+
+
+
+WHAT ABOUT THE 5x5 SEED?
+The binary representation of 1/3 is .01 repeating.
+The binary representation of 1/5 is .0011 repeating.
+So instead of taking the first quarter and then recursing into the second,
+you take the first 3/16ths and then recurse into the 4th 16th.
+Everything follows from there but man it's pretty messy.
+
+
+
+actually it appears to be the fractal depth that controls the clusters as much? as the skew
+
+by varying the skew across elaborations you can control the frequency of clusters at arbitrary granularity
+
+LOOK AT THE INTEGRAL OF THE 2D EXPONENTIAL DISTRIBUTION
+HOW MIGHT YOU CHANGE IT?
+HOW MIGHT YOU FIT SEEDS A,B,C,D?
+CAN YOU ADD CONSTANTS TO SHIFT?
+CAN YOU TILT IT?

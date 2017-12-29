@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euf -o pipefail
+
+NET="$1"
+OUT="${2:-${NET%.net}.deg}"
+
+python ./undir2deg.py "$NET" | sort -nr > "$OUT"
+

@@ -1,0 +1,87 @@
+#real seed
+array([ 0.269621 ,  0.12962  ,  0.0623149,
+	0.12962  ,  0.0623149,  0.0299579,
+	0.0623149,  0.0299579,  0.0144022])
+
+#normalized
+array([ 0.34123897,  0.16405026,  0.07886727,
+	0.16405026,  0.07886727,  0.03791546,
+	0.07886727,  0.03791546,  0.01822778])
+
+#added
+array([ 0.29294059,  0.15293959,  0.08563449,
+	0.15293959,  0.08563449,  0.05327749,
+	0.08563449,  0.05327749,  0.03772179])
+
+#these look fairly different but both area  LOT less skew than the old A*A A*B B*B solution
+
+
+
+#5x5
+array([0.126456 ,  0.0814872, 0.0525099,  0.0338371,  0.0218044,
+       0.0814872,  0.0525099, 0.0338371,  0.0218044,  0.0140506,
+       0.0525099,  0.0338371, 0.0218044,  0.0140506,  0.00905414,
+       0.0338371,  0.0218044, 0.0140506,  0.00905414, 0.00583443,
+       0.0218044,  0.0140506, 0.00905414, 0.00583443, 0.00375967])
+
+# normalized
+array([ 0.1600458 ,  0.10313219,  0.06645781,  0.04282506,  0.02759618,
+        0.10313219,  0.06645781,  0.04282506,  0.02759618,  0.01778278,
+        0.06645781,  0.04282506,  0.02759618,  0.01778278,  0.01145914,
+        0.04282506,  0.02759618,  0.01778278,  0.01145914,  0.0073842 ,
+        0.02759618,  0.01778278,  0.01145914,  0.0073842 ,  0.00475833])
+
+
+
+# scraps from kron.cpp
+/*
+	std::discrete_distribution<int> seed3{A*A, A*B, B*B,
+	                                      A*B, sqrt(A*B)*sqrt(B*C), B*C,
+	                                      B*B, B*C, C*C};
+*/
+/*
+	// Real ultimate Graph500 seed based on a symbolic solution
+	double A_ = 0.273919182574206,
+	       B_ = 0.158147313795420,
+               C_ = 0.0913063941914020, // C_ = D_ iff A_/C_ = C_/_F
+               D_ = 0.0527157712651401,
+               E_ = 0.0304354647304673;
+*/
+/*
+	// Real true ultimate hellbane seed based on intergating the exponential distrib
+	double A_ =0.34123897,
+	       B_ =0.16405026,
+	       C_ =0.07886727,
+	       D_ =0.03791546,
+	       E_ =0.01822778;
+*/
+/*	
+	// Here it is normalized additively
+	double A_=0.29294059,
+	       B_=0.15293959,
+	       C_=0.08563449,
+	       D_=0.05327749,
+	       E_=0.03772179;
+*/
+	// I think this is the exact solution. It seems relatively skew, though?
+	// Despite being apparently skew this works perfectly; implies I have more to learn.
+	seed3(9./16,3./16,3./16,1./16);
+	double A_=0.47928994,
+	       B_=0.15976331,
+	       C_=0.053254438,
+	       D_=0.017751479,
+	       E_=0.0059171598;
+	std::discrete_distribution<int> seed3{A_, B_, C_,
+	                                      B_, C_, D_,
+	                                      C_, D_, E_};
+
+	// Linear interp is bad in theory and practice so these may be deprecated.
+	// Alternate 3x3 seed based on resampling the 2x2 seed with linear interpolation.
+	/*std::discrete_distribution<int> seed3{A, (A+B)/2, B,
+	                                     (A+B)/2, (A+B+B+C)/4, (B+C)/2,
+	                                      B, (B+C)/2, C};
+	*/
+	// Alternate 3x3x seed based on resampling the 4x4 tensor product with linear interp.
+	//std::discrete_distribution<int> seed3{4003, 1588, 794, 1588, 574, 270, 794, 270, 120};
+
+

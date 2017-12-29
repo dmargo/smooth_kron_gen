@@ -1,0 +1,11 @@
+# This code actually solves the 1d distribution for a simple Bernoulli coin
+./samples.py A B NUM_SEED2 [NUM_SEED3] > out.samples
+	# A and B are the weight of heads and tails
+sort -g out.samples > out.sort
+	# because i'm lazy
+./srt2freq out.sort EDGE_COUNT > out.degfreq
+	# val1 is the degree and val2 is the EXPECTED frequency, no samples are actually drawn
+gnuplot
+	set logscale x
+	set logscale y
+	plot 'out.degfreq' u 1:2

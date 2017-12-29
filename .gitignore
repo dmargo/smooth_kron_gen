@@ -1,0 +1,7 @@
+kron_generator
+*.net
+*.undir
+*.deg
+*.freqdeg
+*cdf
+*.eps
