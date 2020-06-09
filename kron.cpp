@@ -6,6 +6,9 @@
 #include <cmath>
 #include <cstdlib>
 
+#include <unordered_set>
+#include <string>
+
 double third(double A, double B) {
 	return A*A/(1.0 - A*B);
 }
@@ -47,6 +50,7 @@ int main(int argc, char *argv[]) {
 
 	//double A=9./16, B=3./16,C=B, D=1./16;	// GRAPH500 "pure" 75/25 bilinear map
 	double A=.57, B=.19, C=B, D=.05;	// GRAPH500	l = ??, m = 16*2^l
+    //double A=.9947/2.3118, B=.5504/2.3118, C=0.4299/2.3118, D=1-(A+B+C);
 	//double A=.42, B=.19, C=B, D=.20;	// CAHepPh	l = 14, m = 237010
 	//double A=.48, B=.20, C=.21, D=.11;	// WEBNotreDame	l = 18, m = 1497134
 
@@ -74,7 +78,10 @@ int main(int argc, char *argv[]) {
 	std::fill(sequence.begin() + s2, sequence.begin() + s2 + s3, usecase::use3);
 	std::fill(sequence.begin() + s2 + s3, sequence.end(), usecase::use5);
 
-	for (size_t m_i = 0; m_i != m; ++m_i) {
+	std::unordered_set <std::string> edge_set;
+	size_t num_collisions = 0;
+
+	for (size_t m_i = 0; m_i != m; ) {
 		size_t row = 0;
 		size_t col = 0;
 		size_t base = 1;
@@ -103,7 +110,15 @@ int main(int argc, char *argv[]) {
 		assert(row < base);
 		assert(col < base);
 		assert(base == size_t(pow(2,s2)*pow(3,s3)*pow(5,s5)));
-		
-		printf("%zu\t%zu\n", row, col);
+		std::string key = std::to_string(row) + "->" + std::to_string(col);
+		if (edge_set.find(key) == edge_set.end()) {	
+			// Only increment the edge counter if we found a previously unseen edge
+			printf("%zu\t%zu\n", row, col);
+			edge_set.insert(key);
+			++m_i;
+		} else {
+			++num_collisions;
+		}
 	}
+	std::cerr << "Num colisions= " << num_collisions << "\n";
 }
